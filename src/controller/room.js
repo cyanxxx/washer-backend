@@ -3,7 +3,7 @@ const Rooms = require('../models/rooms')
 
 roomRouter.get('/', async (request, response) => {
     const roomList = await Rooms.find({})
-    response.json(records.map(roomList => roomList.toJSON()))
+    response.json(roomList.map(room => room.toJSON()))
 })
 
 roomRouter.post('/create', async (request, response) => {
@@ -11,5 +11,5 @@ roomRouter.post('/create', async (request, response) => {
     const newRoom = new Rooms({
         name
     })
-    response.json(records.map(roomList => roomList.toJSON()))
+    newRoom.save().then().catch()
 })
