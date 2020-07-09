@@ -11,5 +11,5 @@ roomRouter.post('/create', async (request, response) => {
     const newRoom = new Rooms({
         name
     })
-    newRoom.save().then().catch()
+    response.json(newRoom.toJSON())
 })

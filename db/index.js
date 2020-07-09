@@ -11,13 +11,5 @@ mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
   .catch((error) => {
     console.log('error connecting to MongoDB:', error.message)
   })
-  const record = new Record({
-    date: '2020-07-07',
-  })
-  
-  record.save().then(result => {
-    console.log('note saved!')
-    mongoose.connection.close()
-  })
   
 module.exports = mongoose

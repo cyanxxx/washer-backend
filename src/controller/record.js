@@ -16,7 +16,7 @@ recordsRouter.get('/', async (request, response) => {
 recordsRouter.get('/latest', async (request, response) => {
     const {roomId} = request.body
     //最新日期
-    const records = await Record.find({roomId}).sort('-date')[0]
+    const records = await Record.find({roomId}).sort('-date').limit(1)
     response.json(records.map(record => record.toJSON()))
 })
 
@@ -27,17 +27,26 @@ recordsRouter.post('/create', async (request, response) => {
     let newRecord = new Record({
         date: new Date(date),
         roomId,
-        userId
+        userId: request.token.id
     })
-    const records = await newRecord.save()
-    response.json(records.map(record => record.toJSON()))
+    const record = await newRecord.save()
+    response.json(record.toJSON())
 })
 
 recordsRouter.post('/update', async (request, response) => {
     const {date, roomId} = request.body
     //拿user相关
     //最新日期
-    const records = await Record.update({date, roomId}, {$set: {userId}})
-    response.json(records.map(record => record.toJSON()))
+    const records = await Record.update({
+        date,
+        roomId
+    }, {
+        $set: {
+            userId: request.token.id
+        }
+    })
+    records.then(res => {
+        response.json(records.toJSON())
+    }).catch(error => next(error))
 })
 
