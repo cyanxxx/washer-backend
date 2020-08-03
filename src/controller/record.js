@@ -50,3 +50,4 @@ recordsRouter.post('/update', async (request, response) => {
     }).catch(error => next(error))
 })
 
+module.exports = recordsRouter

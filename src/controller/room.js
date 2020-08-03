@@ -1,5 +1,5 @@
 const roomRouter = require('express').Router()
-const Rooms = require('../models/rooms')
+const Rooms = require('../models/room')
 
 roomRouter.get('/', async (request, response) => {
     const roomList = await Rooms.find({})
@@ -13,3 +13,5 @@ roomRouter.post('/create', async (request, response) => {
     })
     response.json(newRoom.toJSON())
 })
+
+module.exports = roomRouter
