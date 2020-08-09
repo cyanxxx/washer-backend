@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+      "target": "es6",
+      "module": "commonjs",
+      "outDir": "dist/js",
+      "rootDir": "src",
+      "strict": true,
+      "esModuleInterop": true,
+      "forceConsistentCasingInFileNames": true,
+      "sourceMap":true,
+      "typeRoots": [
+        "@types", // custom merged types must be first in a list
+        "node_modules/@types"
+      ]
+    },
+    "include": ["src/**/*"],
+    "exclude": ["node_modules", ".vscode"]
+  }

@@ -1,10 +1,8 @@
-const mongoose = require('mongoose')
-
+import mongoose from "mongoose"
 const url = process.env.MONGODB_URI
-
 console.log('connecting to', url)
 
-mongoose
+export let moogoose = mongoose
 	.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
 	.then((result) => {
 		console.log('connected to MongoDB')
@@ -12,5 +10,3 @@ mongoose
 	.catch((error) => {
 		console.log('error connecting to MongoDB:', error.message)
 	})
-
-module.exports = mongoose
