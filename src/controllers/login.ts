@@ -1,0 +1,28 @@
+
+import { Response, Request } from "express"
+import User from "../models/user"
+import { wxLogin } from "../service/wxLogin"
+import { sign } from "jsonwebtoken"
+import { IUserToken } from "../types/token"
+
+const login = async (request: Request, response: Response) => {
+	const body = request.body
+	console.log(body)
+	const { openId } = await wxLogin(body.code)
+   
+	const user = await User.findOne({userId: openId})
+	if(user) {
+		const userForToken:IUserToken = {
+			openId: user.openId,
+			aliasName: user.aliasName
+		}
+		const token = sign(userForToken, process.env.SECRET!)
+		response
+			.status(200)
+			.send({
+				token,
+				name: user.aliasName
+			})
+	}
+}
+export { login }
