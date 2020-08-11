@@ -23,7 +23,7 @@ export const tokenExtractor = (request: Request, response: Response, next: any) 
     request.token = decodedToken as IUserToken
     next()
 }
-const whiteList = ['/login', 'resignter']
+const whiteList = ['/api/login', '/api/resignter']
 export const checkAuth = (request: Request, response: Response, next: any) => {
     let isWhiteUrl = whiteList.some((whiteUrl)=> request.url === whiteUrl);
     if(isWhiteUrl) {
