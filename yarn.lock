@@ -257,7 +257,7 @@ bluebird@3.5.1:
   resolved "https://registry.npm.taobao.org/bluebird/download/bluebird-3.5.1.tgz?cache=0&sync_timestamp=1589682744631&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fbluebird%2Fdownload%2Fbluebird-3.5.1.tgz#d9551f9de98f1fcda1e683d17ee91a0602ee2eb9"
   integrity sha1-2VUfnemPH82h5oPRfukaBgLuLrk=
 
-body-parser@1.19.0:
+body-parser@1.19.0, body-parser@^1.19.0:
   version "1.19.0"
   resolved "https://registry.npm.taobao.org/body-parser/download/body-parser-1.19.0.tgz#96b2709e57c9c4e09a6fd66a8fd979844f69f08a"
   integrity sha1-lrJwnlfJxOCab9Zqj9l5hE9p8Io=
@@ -1399,10 +1399,10 @@ mkdirp@^0.5.1:
   dependencies:
     minimist "^1.2.5"
 
-mongodb@3.5.9:
-  version "3.5.9"
-  resolved "https://registry.npm.taobao.org/mongodb/download/mongodb-3.5.9.tgz?cache=0&sync_timestamp=1591968250031&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fmongodb%2Fdownload%2Fmongodb-3.5.9.tgz#799b72be8110b7e71a882bb7ce0d84d05429f772"
-  integrity sha1-eZtyvoEQt+caiCu3zg2E0FQp93I=
+mongodb@3.5.10:
+  version "3.5.10"
+  resolved "https://registry.npm.taobao.org/mongodb/download/mongodb-3.5.10.tgz#ed414988d2935b529004cead6dfdd22681258887"
+  integrity sha1-7UFJiNKTW1KQBM6tbf3SJoEliIc=
   dependencies:
     bl "^2.2.0"
     bson "^1.1.4"
