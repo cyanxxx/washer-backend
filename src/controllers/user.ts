@@ -4,8 +4,8 @@ import User from "../models/user"
 
 const getUser = async (req: Request, res: Response): Promise<void> => {
   try {
-    let userId = req.token
-    let user = await User.findById(userId)
+    let { openId } = req.token
+    let user = await User.findById(openId);
     res.status(200).json({ user })
   } catch (error) {
     throw error

@@ -11,7 +11,7 @@ const login = async (request: Request, response: Response) => {
 	console.log(body)
 	const { openId } = await wxLogin(body.code)
    
-	const user = await User.findOne({userId: openId})
+	const user = await User.findOne({ openId: openId });
 	if(user) {
 		const userForToken:IUserToken = {
 			openId: user.openId,
