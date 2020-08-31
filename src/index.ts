@@ -18,7 +18,7 @@ router.use('/api/user', userRouter)
 router.use('/api/room', roomRouter)
 router.use('/api/record', recordRouter)
 router.use('/api/login', loginRouter)
-router.use('/api/resignter', resignterRouter)
+router.use('/api/register', resignterRouter)
 app.use(router)
 app.use(unknownEndpoint)
 app.listen(PORT, () => {

@@ -14,9 +14,10 @@ const getRooms = async (req: Request, res: Response): Promise<void> => {
 const createRoom = async (req: Request, res: Response): Promise<void> => {
   try {
     const { name } = req.body
-    const newRoom = new Room({
+    const newRoom = await new Room({
         name
     })
+    const room = await newRoom.save()
     res.json(newRoom.toJSON())
   } catch (error) {
     throw error

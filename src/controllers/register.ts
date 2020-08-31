@@ -2,7 +2,7 @@ import { Response, Request } from "express"
 import User from "../models/user"
 import { wxLogin } from "../service/wxLogin"
 
-export const resignter = async (request: Request, response: Response) => {
+export const register = async (request: Request, response: Response) => {
     try {
         const body = request.body
         const { openid } = await wxLogin(body.code)

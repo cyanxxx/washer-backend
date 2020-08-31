@@ -3,7 +3,7 @@ import { model, Schema } from "mongoose"
 
 const roomSchema = new Schema({
   name: String,
-  id: String,
+  // id: String,
   members: [
       {
         type: Schema.Types.ObjectId,
