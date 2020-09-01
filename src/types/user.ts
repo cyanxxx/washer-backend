@@ -3,5 +3,4 @@ export interface IUser extends Document {
     aliasName: string;
     openId: string;
     color: string;
-    rooms: string[];
 }
