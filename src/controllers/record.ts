@@ -1,6 +1,8 @@
 
 import { Response, Request } from "express"
 import Record from "../models/record"
+import User from "../models/user";
+import moment from 'moment'
 
 const getRecord = async (request: Request, response: Response) => {
     //查今年
@@ -10,8 +12,11 @@ const getRecord = async (request: Request, response: Response) => {
     const records = await Record.find({
         $lte: endDate,
         gte: startDate
-    })
-    response.json(records.map(record => record.toJSON()))
+    }).populate('userInfo', 'aliasName color')
+    response.json(records.map(record => ({
+        ...record,
+        date: moment(record.date).format('YYYY-MM-DD'),
+    })))
 }
 
 const getLateset =  async (request: Request, response: Response) => {
@@ -23,13 +28,12 @@ const getLateset =  async (request: Request, response: Response) => {
 
 const createRecord = async (request: Request, response: Response) => {
     const {date, roomId} = request.body
-    //拿user相关
-    //最新日期
+    let user = await User.findById(request.token.userId)
     let newRecord = new Record({
-        date: new Date(date),
-        roomId,
-        userId: request.token.openId
-    })
+      date: new Date(date),
+      roomId,
+      userInfo: user,
+    });
     const record = await newRecord.save()
     response.json(record.toJSON())
 }
@@ -39,8 +43,6 @@ const updateRecord = async (request: Request, response: Response) => {
         params: { id },
         body,
       } = request
-    //拿user相关
-    //最新日期
     const records = await Record.findByIdAndUpdate(
         { _id: id },
         body
