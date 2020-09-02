@@ -1,12 +1,22 @@
 
-import e, { Response, Request } from "express"
+import { Response, Request } from "express"
 import Room from "../models/room"
 import Room_User from "../models/room_user"
 
 const getRooms = async (req: Request, res: Response): Promise<void> => {
   try {
-    const roomList = await Room.find()
-    res.json(roomList.map(room => room.toJSON()))
+    let roomList = []
+    if(req.body) {
+      const { personal } = req.body
+      if(personal) {
+        roomList = await Room_User.find({
+          userId: req.token.userId
+        }) 
+      }
+    }else{
+       roomList = await Room.find();
+       res.json(roomList.map((room) => room.toJSON()));
+    }
   } catch (error) {
     throw error
   }
@@ -82,4 +92,30 @@ const addMemberToRoom = async (req: Request, res: Response): Promise<void> => {
   }
 }
 
-export { getRooms, createRoom, updateRoom, getRoomMember, addMemberToRoom };
+const leaveRoom = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const {
+      params: { id },
+    } = req;
+    const room = await Room.findById({ _id: id });
+    if (!room) {
+      res.status(404);
+    }
+    const deleteRoom = await Room_User.remove({
+      roomId: id,
+      userId: req.token.userId
+    });
+    res.status(200);
+  } catch (error) {
+    throw error;
+  }
+};
+
+export {
+  getRooms,
+  createRoom,
+  updateRoom,
+  getRoomMember,
+  addMemberToRoom,
+  leaveRoom,
+};

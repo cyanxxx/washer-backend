@@ -15,7 +15,8 @@ const login = async (request: Request, response: Response) => {
 	if(user) {
 		const userForToken:IUserToken = {
 			openId: user.openId,
-			aliasName: user.aliasName
+			aliasName: user.aliasName,
+			userId: user._id
 		}
 		const token = sign(userForToken, process.env.SECRET!)
 		response
