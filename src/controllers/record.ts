@@ -6,24 +6,31 @@ import moment from 'moment'
 
 const getRecord = async (request: Request, response: Response) => {
     //查今年
-    const {year} = request.body
+    const {year} = request.query
     let startDate = new Date(`${year}-01-01`)
     let endDate = new Date(`${year}-12-31`)
     const records = await Record.find({
-        $lte: endDate,
-        gte: startDate
-    }).populate('userInfo', 'aliasName color')
-    response.json(records.map(record => ({
-        ...record,
-        date: moment(record.date).format('YYYY-MM-DD'),
-    })))
+        date: {
+            $lt: endDate,
+            $gte: startDate
+        }
+    }).populate('userInfo', 'aliasName color _id')
+    console.log(records)
+    if(records.length > 0) {
+        response.json(records.map(record => record.toJSON()))
+    }else{
+        response.json([])
+    }
+    
 }
 
-const getLateset =  async (request: Request, response: Response) => {
-    const {roomId} = request.body
+const getLatest =  async (request: Request, response: Response) => {
+    const {
+        params: { id },
+      } = request
     //最新日期
-    const records = await Record.find({roomId}).sort('-date').limit(1)
-    response.json(records.map(record => record.toJSON()))
+    const record = await Record.find({roomId:id}).populate('userInfo').sort('-date').limit(1)
+    response.json(record[0].toJSON())
 }
 
 const createRecord = async (request: Request, response: Response) => {
@@ -50,4 +57,4 @@ const updateRecord = async (request: Request, response: Response) => {
     response.json(records && records.toJSON())
 }
 
-export {updateRecord, createRecord, getLateset, getRecord}
+export {updateRecord, createRecord, getLatest, getRecord}

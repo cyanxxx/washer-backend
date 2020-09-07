@@ -7,7 +7,7 @@ const roomUserSchema = new Schema({
         ref: 'Room'
       },
     userId: {
-        type: Schema.Types.ObjectId,,
+        type: Schema.Types.ObjectId,
         ref: 'User'
       },
   })
