@@ -7,7 +7,7 @@ import user from "../models/user"
 const getRooms = async (req: Request, res: Response): Promise<void> => {
   try {
     let roomList = []
-    if(req.query) {
+    if(req.query.personal) {
       const { personal } = req.query
       if(personal) {
         console.log('room:', req.token)
@@ -28,11 +28,23 @@ const getRooms = async (req: Request, res: Response): Promise<void> => {
 const createRoom = async (req: Request, res: Response): Promise<void> => {
   try {
     const { name } = req.body
-    const room = await new Room({
-      name,
-    });
-    const newRoom = await room.save();
-    res.json(newRoom.toJSON())
+    const existRoom = await Room.find({
+      name
+    })
+    if(existRoom.length > 0) {
+      res
+			.status(409)
+			.send({
+				message: '不能创建相同名字的房间'
+      })
+      return
+    }else{
+      const room = await new Room({
+        name,
+      });
+      const newRoom = await room.save();
+      res.json(newRoom.toJSON())
+    }
   } catch (error) {
     throw error
   }
@@ -88,7 +100,7 @@ const addMemberToRoom = async (req: Request, res: Response): Promise<void> => {
     }
     const room_user = new Room_User({
       roomId: id,
-      userId: req.token.openId
+      userId: req.token.userId
     })
     const newRoomUser = await room_user.save()
     res.status(200)
@@ -102,15 +114,15 @@ const leaveRoom = async (req: Request, res: Response): Promise<void> => {
     const {
       params: { id },
     } = req;
-    const room = await Room.findById({ _id: id });
+    console.log(id)
+    const room = await Room_User.findOneAndDelete({ roomId: id, userId: req.token.userId });
+    console.log(room)
     if (!room) {
       res.status(404);
+    }else{
+      res.json(room && room.toJSON())
     }
-    const deleteRoom = await Room_User.remove({
-      roomId: id,
-      userId: req.token.userId
-    });
-    res.status(200);
+   
   } catch (error) {
     throw error;
   }

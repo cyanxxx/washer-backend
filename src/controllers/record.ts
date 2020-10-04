@@ -30,19 +30,23 @@ const getLatest =  async (request: Request, response: Response) => {
       } = request
     //最新日期
     const record = await Record.find({roomId:id}).populate('userInfo').sort('-date').limit(1)
-    response.json(record[0].toJSON())
+    if(record.length > 0) {
+        response.json(record[0].toJSON())
+    }else{
+        response.json({})
+    }
+    
 }
 
 const createRecord = async (request: Request, response: Response) => {
-    const {date, roomId} = request.body
-    let user = await User.findById(request.token.userId)
+    const {date, roomId, userId} = request.body
     let newRecord = new Record({
       date: new Date(date),
       roomId,
-      userInfo: user,
+      userInfo: userId,
     });
     const record = await newRecord.save()
-    response.json(record.toJSON())
+    response.json(record && record.toJSON())
 }
 
 const updateRecord = async (request: Request, response: Response) => {
@@ -50,11 +54,21 @@ const updateRecord = async (request: Request, response: Response) => {
         params: { id },
         body,
       } = request
-    const records = await Record.findByIdAndUpdate(
+    const record = await Record.findByIdAndUpdate(
         { _id: id },
         body
+    )
+    response.json(record && record.toJSON())
+}
+
+const deleteRecord = async (request: Request, response: Response) => {
+    const {
+        params: { id },
+      } = request
+    const records = await Record.findByIdAndDelete(
+        { _id: id }
     )
     response.json(records && records.toJSON())
 }
 
-export {updateRecord, createRecord, getLatest, getRecord}
+export {updateRecord, createRecord, getLatest, getRecord, deleteRecord}

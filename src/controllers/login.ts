@@ -9,9 +9,9 @@ import { IUserToken } from "../types/token"
 const login = async (request: Request, response: Response) => {
 	const body = request.body
 	console.log(body)
-	const { openId } = await wxLogin(body.code)
+	const { openid } = await wxLogin(body.code)
    
-	const user = await User.findOne({ openId: openId });
+	const user = await User.findOne({ openId: openid });
 	if(user) {
 		const userForToken:IUserToken = {
 			openId: user.openId,
@@ -29,7 +29,7 @@ const login = async (request: Request, response: Response) => {
 		response
 			.status(401)
 			.send({
-				msg: '还没在洗碗工注册'
+				message: '还没在洗碗工注册'
 			})
 	}
 }
